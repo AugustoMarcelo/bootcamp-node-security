@@ -6,3 +6,4 @@ Incrementing <a href="https://github.com/AugustoMarcelo/bootcamp-patterns-cachin
 - <strong>Express Brute</strong>: Blocks malicious requests attempts and saves using redis
 - <strong>Helmet</strong>: Apply some settings to headers
 - <strong>Express Rate Limit</strong>: Limit requests for all routes
+- <strong>CORS</strong>: Setting simple origin to cors configs
