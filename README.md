@@ -4,3 +4,4 @@ Incrementing <a href="https://github.com/AugustoMarcelo/" target="_blank" rel="n
 
 ## Security libs implemented
 - <strong>Express Brute</strong>: Blocks malicious requests attempts and saves using redis
+- <strong>Helmet</strong>: Apply some settings to headers
