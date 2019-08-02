@@ -4,6 +4,9 @@ import express from 'express';
 import path from 'path';
 import cors from 'cors';
 import helmet from 'helmet';
+import redis from 'redis';
+import RateLimit from 'express-rate-limit';
+import RateLimitRedis from 'rate-limit-redis';
 import Youch from 'youch';
 import * as Sentry from '@sentry/node';
 import 'express-async-errors';
@@ -28,10 +31,30 @@ class App {
     this.server.use(helmet());
     this.server.use(cors());
     this.server.use(express.json());
+
     this.server.use(
       '/files',
       express.static(path.resolve(__dirname, '..', 'temp', 'uploads'))
     );
+
+    /**
+     * Add the rate limit for make requests
+     * Only 10 request will be allowed every 15 minutes
+     */
+    if (process.env.NODE_ENV !== 'development') {
+      this.server.use(
+        new RateLimit({
+          store: new RateLimitRedis({
+            client: redis.createClient({
+              host: process.env.REDIS_HOST,
+              port: process.env.REDIS_PORT,
+            }),
+          }),
+          windowMs: 1000 * 60 * 15, // milisseconds * seconds * minutes
+          max: 100, // maximun requests
+        })
+      );
+    }
   }
 
   routes() {
